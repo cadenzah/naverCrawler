@@ -1,0 +1,20 @@
+{
+  "name": "navercrawler",
+  "version": "1.0.0",
+  "description": "Node.js crawler that parces 100 results from certain URL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "cadenzah",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "iconv": "^2.3.2",
+    "request": "^2.88.0"
+  }
+}
