@@ -11,22 +11,31 @@ request({ url, encoding: null}, (error, response, body) => {
   const htmlDoc = iconv.convert(body).toString()
   const totalResults = []
   const $ = cheerio.load(htmlDoc)
-  const colArr = $('.question')
-    for (let i = 0 ; i < colArr.length ; i++) {
-      /* 항목 하나 파싱 */
-      const elements = colArr[i].children // 일단 맨 처음 1개로만
-      const question = elements[3] // 제목이 담긴 <a>만 주목
-      const content = question.children
+  const colArr = $('.type01 > li')
+  // 내용 모두 완료한 뒤, 그 뒤에서 날짜만 붙임
+  // [1]는 제목, [3]는 날짜
+  for (let i = 0 ; i < colArr.length ; i++) {
+    // console.log(colArr[i].children[1].children) // <dl> 하위 요소
 
-      // node.shift() // 너무 오래걸림; 요소 객체가 너무 커서 그런듯
-      const result = content.map(text => {
-        if (text.type === 'text' && text.data === '') return
-        else if (text.type === 'tag' && text.name === 'strong') return text.children[0].data
-        else return text.data.trim()
-      }).join(' ').trim()
-      totalResults.push(result)
-      /* 항목 하나 파싱 끝 */
-    } // 10개 항목 파싱 끝
+    /* 항목 하나 파싱 */
+    /* 제목 먼저 */
+    // console.log(colArr[i])
+    const elements = colArr[i].children[1].children // <dl>의 하위 요소들
+    const question = elements[1].children[3] // dl > dt > a ; 제목이 담긴 <a>만 주목
+    const content = question.children
+
+    // node.shift() // 너무 오래걸림; 요소 객체가 너무 커서 그런듯
+    const result = content.map(text => {
+      if (text.type === 'text' && text.data === '') return
+      else if (text.type === 'tag' && text.name === 'strong') return text.children[0].data
+      else return text.data.trim()
+    }).join(' ').trim()
+
+    /* 그 다음 날짜 추출 */
+
+    totalResults.push(result)
+    /* 항목 하나 파싱 끝 */
+  } // 10개 항목 파싱 끝
   console.log(totalResults)
 })
 
