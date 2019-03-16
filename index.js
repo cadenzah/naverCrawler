@@ -5,8 +5,12 @@ const iconv = new Iconv('utf-8', 'utf-8//translit//ignore');
 const excel = require('./excel.js')
 
 let totalResults = undefined
-const keyword = encodeURI('현대무용') // 필요 검색 키워드로 변경
-const number = 100 // 필요한 검색 결과의 개수
+
+/* 수집하고자 하는 검색 키워드를 입력 */
+const keyword = encodeURI('현대무용')
+
+/* 필요한 검색 결과의 수량을 입력 */
+const number = 100
 const pages = parseInt(number / 10)
 
 const parcer = (body) => {
@@ -66,6 +70,3 @@ Promise.all(requestPromises).then((results10s) => {
 //     console.log()
 //   }, 500)
 // }
-
-// 원본 출처: https://victorydntmd.tistory.com/94 [victolee]
-// 일북 가공: https://github.com/cadenzah

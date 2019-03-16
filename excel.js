@@ -23,5 +23,6 @@ module.exports = (array) => {
     worksheet.cell(2+index, 2).string(content.result)
   })
 
-  workbook.write('result.xlsx'); // 엑셀 파일 이름
+  /* 생성되는 엑셀 파일의 이름 입력. 확장자는 .xlsx */
+  workbook.write('result.xlsx');
 }
