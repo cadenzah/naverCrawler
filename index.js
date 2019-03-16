@@ -2,8 +2,9 @@ const cheerio = require('cheerio');
 const request = require('request-promise')
 const Iconv = require('iconv').Iconv;
 const iconv = new Iconv('utf-8', 'utf-8//translit//ignore');
+const excel = require('./excel.js')
 
-const totalResults = undefined
+let totalResults = undefined
 const keyword = encodeURI('현대무용') // 필요 검색 키워드로 변경
 const number = 100 // 필요한 검색 결과의 개수
 const pages = parseInt(number / 10)
@@ -33,7 +34,9 @@ const parcer = (body) => {
     const date = elements[3].children[0].data.trim()
 
     /* 제목과 날짜 합쳑서 반환 */
-    results10.push(`${result} - ${date}`)
+    results10.push({
+      result, date
+    })
   } /* 10개 항목 파싱 끝 */
   return results10
 }
@@ -48,11 +51,21 @@ for (let i = 0 ; i < pages ; i++) { // pages
 }
 
 Promise.all(requestPromises).then((results10s) => {
-  console.log(results10s.reduce((result, current) => result.concat(current), []))
+  totalResults = results10s.reduce((result, current) => result.concat(current), [])
+  console.log(totalResults)
+  excel(totalResults)
 }).catch((error) => {
-  console.log(error.message)
-  // console.error(error)
+  // console.log(error.message)
+  console.error(error)
 })
+
+/* Visualization */
+// let length = totalResults.length
+// for (let i = 0 ; i < length ; i++) {
+//   setInterval(() => {
+//     console.log()
+//   }, 500)
+// }
 
 // 원본 출처: https://victorydntmd.tistory.com/94 [victolee]
 // 일북 가공: https://github.com/cadenzah
