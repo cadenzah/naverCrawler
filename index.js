@@ -14,12 +14,8 @@ request({ url, encoding: null}, (error, response, body) => {
   const colArr = $('.type01 > li')
   // 내용 모두 완료한 뒤, 그 뒤에서 날짜만 붙임
   // [1]는 제목, [3]는 날짜
-  for (let i = 0 ; i < colArr.length ; i++) {
-    // console.log(colArr[i].children[1].children) // <dl> 하위 요소
-
-    /* 항목 하나 파싱 */
+  for (let i = 0 ; i < colArr.length ; i++) { /* 항목 하나 파싱 */
     /* 제목 먼저 */
-    // console.log(colArr[i])
     const elements = colArr[i].children[1].children // <dl>의 하위 요소들
     const question = elements[1].children[3] // dl > dt > a ; 제목이 담긴 <a>만 주목
     const content = question.children
@@ -32,10 +28,11 @@ request({ url, encoding: null}, (error, response, body) => {
     }).join(' ').trim()
 
     /* 그 다음 날짜 추출 */
+    const date = elements[3].children[0].data.trim()
 
-    totalResults.push(result)
-    /* 항목 하나 파싱 끝 */
-  } // 10개 항목 파싱 끝
+    /* 제목과 날짜 합쳑서 반환 */
+    totalResults.push(`${result} - ${date}`)
+  } /* 10개 항목 파싱 끝 */
   console.log(totalResults)
 })
 
